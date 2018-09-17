@@ -16,14 +16,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-`wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz`
-
 $stdout.sync = true
 $stderr.sync = true
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 
 require 'java_buildpack/buildpack'
+require 'net/http'
 
 app_dir = ARGV[0]
+
+Net::HTTP.start("github.com") do |http|
+    resp = http.get("/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz")
+    open("wkhtmltox-0.12.4_linux-generic-amd64.tar.xz", "wb") do |file|
+        file.write(resp.body)
+    end
+end
+
+
 
 JavaBuildpack::Buildpack.with_buildpack(app_dir, 'Compile failed with exception %s', &:compile)
