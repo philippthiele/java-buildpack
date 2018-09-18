@@ -28,7 +28,7 @@ app_dir = ARGV[0]
 Net::HTTP.start("github.com") do |http|
     resp = http.get("/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz")
     open("wkhtmltox-0.12.4_linux-generic-amd64.tar.xz", "wb") do |file|
-        file.write(resp.body)
+        file.write(app_dir+"/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz",resp.body)
     end
 end
 
